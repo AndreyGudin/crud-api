@@ -1,1 +1,0 @@
-(()=>{"use strict";let s=1,t=2;s+=1,t+=1,console.log("first")})();
