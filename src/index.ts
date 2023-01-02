@@ -7,11 +7,12 @@ import { User } from './types/types';
 import getReq from './routes/getReq';
 
 dotenv.config({ path: './src/.env' });
-
+const id = uuidv4();
+console.log(id);
 const { PORT } = process.env;
 const server = createServer((req, res) => {
   const users: User[] = [{
-    id: uuidv4(),
+    id,
     username: 'Vasya',
     age: 23,
     hobbies: ['fun', 'run'],
