@@ -2,9 +2,8 @@
 
 import { IncomingMessage, ServerResponse } from 'node:http';
 
-/* eslint-disable import/prefer-default-export */
 type User = {
-  id: string;
+  id?: string;
   username: string;
   age: number;
   hobbies: string[];
