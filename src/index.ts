@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { User } from './types/types';
 import getReq from './routes/getReq';
 import postReq from './routes/postReq';
+import putReq from './routes/putReq';
 
 dotenv.config({ path: './src/.env' });
 const id = uuidv4();
@@ -15,8 +16,8 @@ const users: User[] = [{
   age: 23,
   hobbies: ['fun', 'run'],
 }];
-console.log(id);
 const { PORT } = process.env;
+
 const server = createServer((req, res) => {
   res.statusCode = 200;
   switch (req.method) {
@@ -25,6 +26,9 @@ const server = createServer((req, res) => {
       break;
     case 'POST':
       postReq(req, res, users);
+      break;
+    case 'PUT':
+      putReq(req, res, users);
       break;
     default:
       res.statusCode = 404;
