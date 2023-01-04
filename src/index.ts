@@ -7,6 +7,7 @@ import { User } from './types/types';
 import getReq from './routes/getReq';
 import postReq from './routes/postReq';
 import putReq from './routes/putReq';
+import deleteReq from './routes/deleteReq';
 
 dotenv.config({ path: './src/.env' });
 const id = uuidv4();
@@ -29,6 +30,9 @@ const server = createServer((req, res) => {
       break;
     case 'PUT':
       putReq(req, res, users);
+      break;
+    case 'DELETE':
+      deleteReq(req, res, users);
       break;
     default:
       res.statusCode = 404;
