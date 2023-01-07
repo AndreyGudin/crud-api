@@ -22,82 +22,8 @@ const { MODE_ENV } = process.env;
 const { pid } = process;
 if (MODE_ENV === 'single') {
   const server = createServer((req, res) => {
-    res.statusCode = 200;
-    switch (req.method) {
-      case 'GET':
-        getReq(req, res, users);
-        break;
-      case 'POST':
-        postReq(req, res, users);
-        break;
-      case 'PUT':
-        putReq(req, res, users);
-        break;
-      case 'DELETE':
-        deleteReq(req, res, users);
-        break;
-      default:
-        res.statusCode = 404;
-        res.setHeader('Content-Type', 'application/json');
-        res.write(
-          JSON.stringify({
-            title: 'Not Found',
-            message: 'Route does not exist',
-          }),
-        );
-        res.end();
-    }
-  });
-
-  server.listen(PORT, () => {
-    console.log(`Server started om port : ${PORT}`);
-  });
-} else {
-  const numberOfCPUs: number = cpus().length;
-  if (cluster.isPrimary) {
-    let u: User[] = [];
-    for (let i = 0; i < numberOfCPUs; i += 1) {
-      const server = cluster.fork({ portChild: i });
-      server.on('message', (message:ServerMessage) => {
-        const arr = message.users;
-        u = [...arr];
-      });
-    }
-    const balancer = createServer((req, res) => {});
-    let count = 1;
-    balancer.on('request', async (request, response) => {
-      const serverHostName = 'localhost';
-      const portForRequest = +(PORT as string) + count;
-      const options:RequestOptions = {
-        hostname: serverHostName,
-        port: portForRequest,
-        path: request.url,
-        method: request.method,
-        headers: { 'Content-Type': 'application/json' },
-      };
-      const requestToServers = requestToServer(options, async (responseFromServer) => {
-        response.statusCode = responseFromServer.statusCode as number;
-        response.setHeader('Content-Type', responseFromServer.headers['content-type'] as string);
-        const body = await bodyParser(responseFromServer);
-        response.write(JSON.stringify(body));
-        response.end();
-      });
-      if ((request.method === 'POST') || (request.method === 'PUT')) {
-        const body = await bodyParser(request);
-        requestToServers.write(JSON.stringify(body));
-      }
-      requestToServers.end();
-      count += 1;
-      if (count > numberOfCPUs) count = 1;
-      const ids = Object.keys(cluster.workers as {});
-      ids.forEach((idW) => cluster.workers![idW]?.send({ users: u }));
-    });
-    balancer.listen(PORT, () => {
-      console.log(`Balancer started om port : ${(balancer.address() as AddressInfo).port}, pid: ${pid}`);
-    });
-  } else {
-    const { portChild } = process.env;
-    const server = createServer((req, res) => {
+    try {
+      res.statusCode = 200;
       switch (req.method) {
         case 'GET':
           getReq(req, res, users);
@@ -122,9 +48,99 @@ if (MODE_ENV === 'single') {
           );
           res.end();
       }
-      res.on('finish', () => {
-        process?.send!({ users });
+    } catch (error) {
+      res.writeHead(500, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ title: 'Server Error', message: 'Error on server side' }));
+    }
+
+  });
+
+  server.listen(PORT, () => {
+    console.log(`Server started om port : ${PORT}`);
+  });
+} else {
+  const numberOfCPUs: number = cpus().length;
+  if (cluster.isPrimary) {
+    let u: User[] = [];
+    for (let i = 0; i < numberOfCPUs; i += 1) {
+      const server = cluster.fork({ portChild: i });
+      server.on('message', (message:ServerMessage) => {
+        const arr = message.users;
+        u = [...arr];
       });
+    }
+    const balancer = createServer((req, res) => {});
+    let count = 1;
+    balancer.on('request', async (request, response) => {
+      try {
+        const serverHostName = 'localhost';
+      const portForRequest = +(PORT as string) + count;
+      const options:RequestOptions = {
+        hostname: serverHostName,
+        port: portForRequest,
+        path: request.url,
+        method: request.method,
+        headers: { 'Content-Type': 'application/json' },
+      };
+      const requestToServers = requestToServer(options, async (responseFromServer) => {
+        response.statusCode = responseFromServer.statusCode as number;
+        response.setHeader('Content-Type', responseFromServer.headers['content-type'] as string);
+        const body = await bodyParser(responseFromServer);
+        response.write(JSON.stringify(body));
+        response.end();
+      });
+      if ((request.method === 'POST') || (request.method === 'PUT')) {
+        const body = await bodyParser(request);
+        requestToServers.write(JSON.stringify(body));
+      }
+      requestToServers.end();
+      count += 1;
+      if (count > numberOfCPUs) count = 1;
+      const ids = Object.keys(cluster.workers as {});
+      ids.forEach((idW) => cluster.workers![idW]?.send({ users: u }));
+      } catch (error) {
+        response.writeHead(500, { 'Content-Type': 'application/json' });
+        response.end(JSON.stringify({ title: 'Server Error', message: 'Error on server side' }));
+      }
+    });
+    balancer.listen(PORT, () => {
+      console.log(`Balancer started om port : ${(balancer.address() as AddressInfo).port}, pid: ${pid}`);
+    });
+  } else {
+    const { portChild } = process.env;
+    const server = createServer((req, res) => {
+      try {
+        switch (req.method) {
+          case 'GET':
+            getReq(req, res, users);
+            break;
+          case 'POST':
+            postReq(req, res, users);
+            break;
+          case 'PUT':
+            putReq(req, res, users);
+            break;
+          case 'DELETE':
+            deleteReq(req, res, users);
+            break;
+          default:
+            res.statusCode = 404;
+            res.setHeader('Content-Type', 'application/json');
+            res.write(
+              JSON.stringify({
+                title: 'Not Found',
+                message: 'Route does not exist',
+              }),
+            );
+            res.end();
+        }
+        res.on('finish', () => {
+          process?.send!({ users });
+        });
+      } catch (error) {
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ title: 'Server Error', message: 'Error on server side' }));
+      }
     });
     process?.on('message', (mess:ServerMessage) => {
       const arr = mess.users;
