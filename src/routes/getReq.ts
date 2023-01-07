@@ -3,6 +3,7 @@ import { validate as uuidValidate } from 'uuid';
 
 import { ApiResponse, User } from '../types/types';
 
+const { pid } = process;
 export default function getReq(
   req: IncomingMessage,
   res: ApiResponse,

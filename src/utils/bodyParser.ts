@@ -8,7 +8,15 @@ export default function bodyParser(req: IncomingMessage):Promise<User> {
       req.on('data', (chunk) => {
         body += chunk;
       });
-      req.on('end', () => resolve(JSON.parse(body)));
-    } catch (error) { reject(error); }
+      req.on('end', () => {
+        const temp: User = {
+          username: 'Temp',
+          age: 23,
+          hobbies: ['temp', 'temp'],
+        };
+        if (body) resolve(JSON.parse(body));
+        else resolve(temp);
+      });
+    } catch (error) { console.log(error); reject(error); }
   });
 }

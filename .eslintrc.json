@@ -23,6 +23,7 @@
         "class-methods-use-this": "off",
         "@typescript-eslint/no-explicit-any": 2,
         "linebreak-style":"off",
-        "no-param-reassign":"off"
+        "no-param-reassign":"off",
+        "@typescript-eslint/no-loop-func":"off",
     }
 }

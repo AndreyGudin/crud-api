@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ApiResponse, User } from '../types/types';
 import bodyParser from '../utils/bodyParser';
 
+const { pid } = process;
 export default async function postReq(
   req: IncomingMessage,
   res: ApiResponse,
@@ -16,7 +17,7 @@ export default async function postReq(
       if (('username' in body) && ('age' in body) && ('hobbies' in body)) {
         users.push({ ...body, id });
         res.statusCode = 201;
-        res.setHeader('Content-Type', 'application/json');
+        res.setHeader('Content-Type', pid);
         res.write(JSON.stringify({ ...body, id }));
         res.end();
       } else {

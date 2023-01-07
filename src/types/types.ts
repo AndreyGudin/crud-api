@@ -9,6 +9,10 @@ type User = {
   hobbies: string[];
 };
 
+type ServerMessage = {
+  users: User[];
+};
+
 type ApiResponse = ServerResponse<IncomingMessage> & { req: IncomingMessage };
 
-export { User, ApiResponse };
+export { User, ApiResponse, ServerMessage };

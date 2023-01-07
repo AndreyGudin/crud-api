@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "lint": "eslint . --ext .ts --fix",
-    "start:dev": "cross-env NODE_ENV=development webpack --config ./webpack.config.js --watch",
+    "start:dev": "cross-env NODE_ENV=development MODE_ENV=single webpack --config ./webpack.config.js --watch",
     "start:prod": "cross-env NODE_ENV=production webpack --config ./webpack.config.js && node ./dist/server.js",
+    "start:multi": "cross-env NODE_ENV=development MODE_ENV=multi webpack --config ./webpack.config.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
