@@ -13,6 +13,7 @@ import getReq from './routes/getReq';
 import postReq from './routes/postReq';
 import putReq from './routes/putReq';
 import bodyParser from './utils/bodyParser';
+import createSingleServer from './server';
 
 dotenv.config({ path: './src/.env' });
 const id = uuidv4();
@@ -21,40 +22,7 @@ const { PORT } = process.env;
 const { MODE_ENV } = process.env;
 const { pid } = process;
 if (MODE_ENV === 'single') {
-  const server = createServer((req, res) => {
-    try {
-      res.statusCode = 200;
-      switch (req.method) {
-        case 'GET':
-          getReq(req, res, users);
-          break;
-        case 'POST':
-          postReq(req, res, users);
-          break;
-        case 'PUT':
-          putReq(req, res, users);
-          break;
-        case 'DELETE':
-          deleteReq(req, res, users);
-          break;
-        default:
-          res.statusCode = 404;
-          res.setHeader('Content-Type', 'application/json');
-          res.write(
-            JSON.stringify({
-              title: 'Not Found',
-              message: 'Route does not exist',
-            }),
-          );
-          res.end();
-      }
-    } catch (error) {
-      res.writeHead(500, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ title: 'Server Error', message: 'Error on server side' }));
-    }
-
-  });
-
+  const server = createSingleServer(users);
   server.listen(PORT, () => {
     console.log(`Server started om port : ${PORT}`);
   });

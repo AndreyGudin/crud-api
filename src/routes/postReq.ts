@@ -17,7 +17,7 @@ export default async function postReq(
       if (('username' in body) && ('age' in body) && ('hobbies' in body)) {
         users.push({ ...body, id });
         res.statusCode = 201;
-        res.setHeader('Content-Type', pid);
+        res.setHeader('Content-Type', 'application/json');
         res.write(JSON.stringify({ ...body, id }));
         res.end();
       } else {

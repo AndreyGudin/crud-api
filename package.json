@@ -9,7 +9,7 @@
     "start:dev": "cross-env NODE_ENV=development MODE_ENV=single webpack --config ./webpack.config.js --watch",
     "start:prod": "cross-env NODE_ENV=production webpack --config ./webpack.config.js && node ./dist/server.js",
     "start:multi": "cross-env NODE_ENV=development MODE_ENV=multi webpack --config ./webpack.config.js --watch",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -24,6 +24,7 @@
   "devDependencies": {
     "@types/jest": "^29.2.5",
     "@types/node": "^18.11.18",
+    "@types/supertest": "^2.0.12",
     "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.47.0",
