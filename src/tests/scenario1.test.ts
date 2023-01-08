@@ -3,7 +3,7 @@ import supertest from "supertest"
 import { User } from '../types/types';
 import createSingleServer from '../server';
 
-const users: User[] = []
+const users: User[] = [];
 
 const app = createSingleServer(users);
 
@@ -48,7 +48,6 @@ describe('Testing scenario 1', () => {
     .expect("Content-Type", /json/)
     .expect(200)
     .expect((res) => {      
-      console.log(res.body);
       expect(res.body[0].username).toEqual("Vasya");
       expect(res.body[0].age).toEqual(32);
       expect(res.body[0].hobbies).toEqual(["fishing", "cats"]);
@@ -73,7 +72,6 @@ describe('Testing scenario 1', () => {
     .send(newUser)
     .expect(200)
     .expect((res) => {      
-      console.log(res.body);
       expect(res.body.username).toEqual("Misha");
       expect(res.body.age).toEqual(52);
       expect(res.body.hobbies).toEqual(["dogs", "riding"]);
@@ -98,7 +96,6 @@ describe('Testing scenario 1', () => {
     .expect((res) => {   
       expect(res.body.title).toEqual('Not Found');
       expect(res.body.message).toEqual('User does not exist');   
-      console.log(res.body);
     })
     .end((err, res) => {
       if (err) return done(err);
