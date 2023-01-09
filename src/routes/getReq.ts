@@ -16,7 +16,7 @@ export default function getReq(
     res.setHeader('Content-Type', 'application/json');
     res.write(JSON.stringify(users));
     res.end();
-  } else if ((id) && (!uuidValidate(id))) {
+  } else if ((id) && (!uuidValidate(id)) && (baseUrl === '/api/users/')) {
     res.writeHead(400, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ title: 'Validation failed', message: 'UUID is not valid' }));
   } else if ((id) && (uuidValidate(id)) && (baseUrl === '/api/users/')) {
