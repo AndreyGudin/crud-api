@@ -26,7 +26,7 @@ if (MODE_ENV === 'single') {
   server.listen(PORT, () => {
     console.log(`Server started om port : ${PORT}`);
   });
-} else {
+} else if (MODE_ENV === 'multi') {
   const numberOfCPUs: number = cpus().length;
   if (cluster.isPrimary) {
     let u: User[] = [];
