@@ -4,6 +4,7 @@ import { validate as uuidValidate } from 'uuid';
 import { ApiResponse, User } from '../types/types';
 import bodyParser from '../utils/bodyParser';
 
+const { pid } = process;
 export default async function getReq(
   req: IncomingMessage,
   res: ApiResponse,
