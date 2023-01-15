@@ -10,7 +10,7 @@ export default async function postReq(
   res: ApiResponse,
   users: User[],
 ) {
-  if (req.url === '/api/users/') {
+  if (req.url === '/api/users') {
     try {
       const body = await bodyParser(req);
       const id = uuidv4();

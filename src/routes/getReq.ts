@@ -11,7 +11,7 @@ export default function getReq(
 ) {
   const baseUrl = req.url?.substring(0, req.url.lastIndexOf('/') + 1);
   const id = req.url?.split('/')[3];
-  if (req.url === '/api/users/') {
+  if (req.url === '/api/users') {
     res.statusCode = 200;
     res.setHeader('Content-Type', 'application/json');
     res.write(JSON.stringify(users));
