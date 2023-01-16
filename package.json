@@ -9,7 +9,7 @@
     "start:dev": "cross-env NODE_ENV=development MODE_ENV=single webpack --config ./webpack.config.js --watch",
     "prod":"cross-env NODE_ENV=production webpack --config ./webpack.config.js",
     "start:prod": "npm run prod && cross-env MODE_ENV=single node ./dist/server.cjs",
-    "start:multi": "cross-env NODE_ENV=development MODE_ENV=multi webpack --config ./webpack.config.js --watch",
+    "start:multi": "npm run prod && cross-env MODE_ENV=multi node ./dist/server.cjs",
     "test": "jest --verbose"
   },
   "repository": {
