@@ -21,7 +21,8 @@ export default async function getReq(
     const body = await bodyParser(req);
     if (user >= 0) {
       res.statusCode = 200;
-      users[user] = { ...body, id };
+      users[user] = Object.assign(users[user], body);
+      users[user].id = id;
       res.write(JSON.stringify(users[user]));
       res.end();
     } else {
