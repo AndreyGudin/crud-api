@@ -28,7 +28,7 @@ describe("Test scenario 3", () => {
       ]
     };
     supertest(app)
-      .post("/api/users/")
+      .post("/api/users")
       .expect("Content-Type", /json/)
       .send(JSON.stringify(user))
       .expect(400)

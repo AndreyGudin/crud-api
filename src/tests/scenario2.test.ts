@@ -26,7 +26,7 @@ describe("Test scenario 2", () => {
     };
 
     supertest(app)
-      .post("/api/users/")
+      .post("/api/users")
       .expect("Content-Type", /json/)
       .send(JSON.stringify(user))
       .end((err, res) => {
@@ -34,7 +34,7 @@ describe("Test scenario 2", () => {
         return done();
       });
     supertest(app)
-      .post("/api/users/")
+      .post("/api/users")
       .expect("Content-Type", /json/)
       .send(JSON.stringify(user2))
       .end((err, res) => {
@@ -42,7 +42,7 @@ describe("Test scenario 2", () => {
         return done();
       });
     supertest(app)
-      .post("/api/users/")
+      .post("/api/users")
       .expect("Content-Type", /json/)
       .send(JSON.stringify(user3))
       .end((err, res) => {
@@ -50,7 +50,7 @@ describe("Test scenario 2", () => {
         return done();
       });
     supertest(app)
-      .get(`/api/users/`)
+      .get(`/api/users`)
       .expect("Content-Type", /json/)
       .expect(200)
       .expect((res) => {

@@ -11,7 +11,7 @@ describe('Testing scenario 1', () => {
   let id = '';
   test('Expecting GET response with status 200 and empty array', async () => {
     const response = await supertest(app)
-      .get('/api/users/')
+      .get('/api/users')
       .set('Accept', 'application/json')
     expect(response.status).toEqual(200);
     expect(response.body).toEqual([]);
@@ -26,7 +26,7 @@ describe('Testing scenario 1', () => {
       ]
     };
     supertest(app)
-      .post("/api/users/")
+      .post("/api/users")
       .expect("Content-Type", /json/)
       .send(JSON.stringify(user))
       .expect(201)
